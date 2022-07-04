@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { LockClosedIcon } from "@heroicons/react/solid";
+import React from 'react';
+import { LockClosedIcon } from '@heroicons/react/solid';
 
-export default function Example() {
+const SignIn = () => {
   return (
     <div className="h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
@@ -15,11 +16,8 @@ export default function Example() {
             Sign in to your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Or{" "}
-            <a
-              href="#"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
-            >
+            Or{' '}
+            <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
               start your 14-day free trial
             </a>
           </p>
@@ -65,19 +63,13 @@ export default function Example() {
                 type="checkbox"
                 className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
               />
-              <label
-                htmlFor="remember-me"
-                className="ml-2 block text-sm text-gray-900"
-              >
+              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
                 Remember me
               </label>
             </div>
 
             <div className="text-sm">
-              <a
-                href="#"
-                className="font-medium text-indigo-600 hover:text-indigo-500"
-              >
+              <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
                 Forgot your password?
               </a>
             </div>
@@ -86,8 +78,7 @@ export default function Example() {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
               <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                 <LockClosedIcon
                   className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
@@ -101,4 +92,6 @@ export default function Example() {
       </div>
     </div>
   );
-}
+};
+
+export default SignIn;
