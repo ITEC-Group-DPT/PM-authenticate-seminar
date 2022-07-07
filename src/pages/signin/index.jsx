@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import { LockClosedIcon } from '@heroicons/react/solid';
 
 const SignIn = () => {
   return (
@@ -22,11 +21,11 @@ const SignIn = () => {
             </a>
           </p>
         </div>
-        <form className="mt-8 space-y-6" action="#" method="POST">
+        <form className="mt-8 bg-white py-8 px-11 rounded-md shadow-md" action="#" method="POST">
           <input type="hidden" name="remember" defaultValue="true" />
-          <div className="rounded-md shadow-sm -space-y-px">
+          <div className="rounded-md -space-y-px">
             <div>
-              <label htmlFor="email-address" className="sr-only">
+              <label className="text-gray-600 text-sm" htmlFor="email-address">
                 Email address
               </label>
               <input
@@ -35,12 +34,11 @@ const SignIn = () => {
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
+                className="appearance-none shadow-sm relative block w-full mt-1 mb-5 px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               />
             </div>
             <div>
-              <label htmlFor="password" className="sr-only">
+              <label className="text-gray-600 text-sm" htmlFor="password">
                 Password
               </label>
               <input
@@ -49,13 +47,12 @@ const SignIn = () => {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
+                className="appearance-none shadow-sm relative block w-full mt-1 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               />
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex user-none items-center my-8 justify-between">
             <div className="flex items-center">
               <input
                 id="remember-me"
@@ -63,7 +60,7 @@ const SignIn = () => {
                 type="checkbox"
                 className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
               />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+              <label htmlFor="remember-me" className="ml-2 user-none block text-sm text-gray-900">
                 Remember me
               </label>
             </div>
@@ -79,12 +76,6 @@ const SignIn = () => {
             <button
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                <LockClosedIcon
-                  className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
-                  aria-hidden="true"
-                />
-              </span>
               Sign in
             </button>
           </div>
