@@ -1,1 +1,1 @@
-import { isValid, isExist, isError } from '../funcs/signUpFuncs';
+import { isValid, isExist, isError } from '../utils/signUpFuncs';

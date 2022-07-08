@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import bcrypt from 'bcryptjs';
-import { isError } from '../../funcs/signUpFuncs';
+import { isError } from '../../utils/signUpFuncs';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -43,8 +43,8 @@ const SignUp = () => {
           <div
             className="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
             role="alert">
-            <span className="font-medium">Sign up sucessfully!</span> Refresh localStorage to see
-            new account.
+            <span className="font-medium">Sign up sucessfully!</span>{' '}
+            Refresh localStorage to see new account.
           </div>
         ) : (
           ''
@@ -152,7 +152,10 @@ const SignUp = () => {
             <p className="error-msg">{errors.password2}</p>
           </div>
           <div>
-            <button className="submit-btn" type="submit" onClick={(e) => handleSubmit(e)}>
+            <button
+              className="submit-btn"
+              type="submit"
+              onClick={(e) => handleSubmit(e)}>
               Sign up
             </button>
           </div>
