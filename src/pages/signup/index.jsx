@@ -13,10 +13,13 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const err = isError(email, username, phone, password1, password2);
     setErrors(err);
+
     if (Object.keys(err).length === 0) {
       const hash = bcrypt.hashSync(password1, 8);
+      // console.log(bcrypt.compareSync('tory2611', hash));
       const users = JSON.parse(localStorage.getItem('users'));
       const newUser = {
         id: users.length,
