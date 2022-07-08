@@ -1,26 +1,14 @@
 import React, { useState } from 'react';
+import bcrypt from 'bcryptjs';
 
 const SignUp = () => {
-  const [email, setEmail] = useState({
-    value: '',
-    error: '',
-  });
-  const [username, setUsername] = useState({
-    value: '',
-    error: '',
-  });
-  const [phone, setPhone] = useState({
-    value: '',
-    error: '',
-  });
-  const [password1, setPassword1] = useState({
-    value: '',
-    error: '',
-  });
-  const [password2, setPassword2] = useState({
-    value: '',
-    error: '',
-  });
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [phone, setPhone] = useState('');
+  const [password1, setPassword1] = useState('');
+  const [password2, setPassword2] = useState('');
+  const [errors, setErrors] = useState({});
+  const [showNoti, setShowNoti] = useState(false);
 
   const emailRegex = /^[a-zA-Z0-9]+@[a-z]+\.[a-z]{2,3}$/;
   const usernameRegex = /^[a-zA-Z0-9]{6,20}$/;
@@ -38,49 +26,63 @@ const SignUp = () => {
   };
 
   const validation = (emailInp, usernameInp, phoneInp, pw1, pw2) => {
-    // email
-    if (isValid(emailInp, emailRegex))
-      if (isExist(emailInp, 'email')) setEmail({ ...email, error: 'Email is already taken' });
-      else setEmail({ ...email, error: '' });
-    else setEmail({ ...email, error: 'Email is invalid' });
+    const err = {};
 
-    // username
-    if (isValid(usernameInp, usernameRegex))
-      if (isExist(usernameInp, 'username'))
-        setUsername({ ...username, error: 'Username is already taken' });
-      else setUsername({ ...username, error: '' });
-    else
-      setUsername({
-        ...username,
-        error: 'Username must be between 6-20 length with no special character',
-      });
+    if (!isValid(emailInp, emailRegex)) err.email = 'Email is invalid';
+    else if (isExist(emailInp, 'email')) err.email = 'Email is already taken';
 
-    // phone
-    if (!isValid(phoneInp, phoneRegex))
-      setPhone({ ...phone, error: 'Phone number must be 10-digits' });
-    else setPhone({ ...phone, error: '' });
+    if (!isValid(usernameInp, usernameRegex))
+      err.username = 'Username must be between 6-20 length with no special character';
+    else if (isExist(usernameInp, 'username')) err.username = 'Username is already taken';
 
-    // password1
+    if (!isValid(phoneInp, phoneRegex)) err.phone = 'Phone number must be 10-digits';
+
     if (!isValid(pw1, passwordRegex))
-      setPassword1({
-        ...password1,
-        error: 'Password must be between 6-25 length with no special character',
-      });
-    else setPassword1({ ...password1, error: '' });
+      err.password1 = 'Password must be between 6-25 length with no special character';
 
-    // password2
-    if (pw2 !== pw1) setPassword2({ ...password2, error: "Passwords don't match" });
-    else setPassword2({ ...password2, error: '' });
+    if (pw2 !== pw1) err.password2 = "Passwords don't match";
+
+    setErrors(err);
+    if (Object.keys(err).length === 0) return true;
+    return false;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    validation(email.value, username.value, phone.value, password1.value, password2.value);
+
+    if (validation(email, username, phone, password1, password2)) {
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(password1, salt);
+
+      const users = JSON.parse(localStorage.getItem('users'));
+      const newUser = {
+        id: users.length,
+        email,
+        username,
+        password: hash,
+        phone,
+      };
+
+      users.push(newUser);
+      localStorage.setItem('users', JSON.stringify(users));
+
+      setShowNoti(true);
+    } else setShowNoti(false);
   };
 
   return (
     <div className="h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
+        {showNoti ? (
+          <div
+            className="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
+            role="alert">
+            <span className="font-medium">Sign up sucessfully!</span> Refresh localStorage to see
+            new account.
+          </div>
+        ) : (
+          ''
+        )}
         <div>
           <img
             className="mx-auto h-12 w-auto"
@@ -105,11 +107,11 @@ const SignUp = () => {
                 className="input-form"
                 placeholder="Email address"
                 required
-                value={email.value}
-                onChange={(e) => setEmail({ ...email, value: e.target.value })}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <p className="error-msg">{email.error}</p>
+            <p className="error-msg">{errors.email}</p>
 
             <div>
               <label htmlFor="username" className="sr-only">
@@ -123,11 +125,11 @@ const SignUp = () => {
                 className="input-form"
                 placeholder="Username"
                 required
-                value={username.value}
-                onChange={(e) => setUsername({ ...username, value: e.target.value })}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
-            <p className="error-msg">{username.error}</p>
+            <p className="error-msg">{errors.username}</p>
 
             <div>
               <label htmlFor="phone" className="sr-only">
@@ -141,11 +143,11 @@ const SignUp = () => {
                 className="input-form"
                 placeholder="Phone number"
                 required
-                value={phone.value}
-                onChange={(e) => setPhone({ ...phone, value: e.target.value })}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
               />
             </div>
-            <p className="error-msg">{phone.error}</p>
+            <p className="error-msg">{errors.phone}</p>
 
             <div>
               <label htmlFor="password" className="sr-only">
@@ -159,11 +161,11 @@ const SignUp = () => {
                 className="input-form"
                 placeholder="Password"
                 required
-                value={password1.value}
-                onChange={(e) => setPassword1({ ...password1, value: e.target.value })}
+                value={password1}
+                onChange={(e) => setPassword1(e.target.value)}
               />
             </div>
-            <p className="error-msg">{password1.error}</p>
+            <p className="error-msg">{errors.password1}</p>
 
             <div>
               <label htmlFor="password" className="sr-only">
@@ -177,11 +179,11 @@ const SignUp = () => {
                 className="input-form"
                 placeholder="Confirm password"
                 required
-                value={password2.value}
-                onChange={(e) => setPassword2({ ...password2, value: e.target.value })}
+                value={password2}
+                onChange={(e) => setPassword2(e.target.value)}
               />
             </div>
-            <p className="error-msg">{password2.error}</p>
+            <p className="error-msg">{errors.password2}</p>
           </div>
           <div>
             <button className="submit-btn" type="submit" onClick={(e) => handleSubmit(e)}>
