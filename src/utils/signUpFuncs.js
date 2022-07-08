@@ -1,7 +1,7 @@
-const emailRegex = /^[a-zA-Z0-9]+@[a-z]+\.[a-z]{2,3}$/;
-const usernameRegex = /^[a-zA-Z0-9]{6,20}$/;
-const phoneRegex = /^[0-9]{10}$/;
-const passwordRegex = /^[a-zA-Z0-9]{6,25}$/;
+const emailRegex = /^[\w]+@[a-z]+\.[a-z]{2,3}$/;
+const usernameRegex = /^[\w]{6,20}$/;
+const phoneRegex = /^[\d]{10}$/;
+const passwordRegex = /^[\w]{6,}$/;
 
 const isValid = (inp, regex) => {
   if (inp.match(regex)) return true;
@@ -30,8 +30,7 @@ const isError = (emailInp, usernameInp, phoneInp, pw1, pw2) => {
     err.phone = 'Phone number must be 10-digits';
 
   if (!isValid(pw1, passwordRegex))
-    err.password1 =
-      'Password must be between 6-25 length with no special character';
+    err.password1 = 'Password must be at least 6 characters';
 
   if (pw2 !== pw1) err.password2 = "Passwords don't match";
 
