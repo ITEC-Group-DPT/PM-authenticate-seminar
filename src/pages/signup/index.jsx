@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import bcrypt from 'bcryptjs';
-import { isError } from '../../utils/signUpFuncs';
+import isError from '../../utils/signUpFuncs';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -13,13 +13,19 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const err = isError(email, username, phone, password1, password2);
+    const data = {
+      email,
+      username,
+      phone,
+      password1,
+      password2,
+    };
+    const err = isError(data);
     setErrors(err);
 
     if (Object.keys(err).length === 0) {
       const hash = bcrypt.hashSync(password1, 8);
-      // console.log(bcrypt.compareSync('tory2611', hash));
+
       const users = JSON.parse(localStorage.getItem('users'));
       const newUser = {
         id: users.length,
@@ -62,8 +68,8 @@ const SignUp = () => {
         <form className="mt-8 space-y-6" action="#" method="POST">
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="email-address" className="sr-only">
-                Email address
+              <label htmlFor="email" className="sr-only">
+                email
               </label>
               <input
                 id="email"
@@ -81,7 +87,7 @@ const SignUp = () => {
 
             <div>
               <label htmlFor="username" className="sr-only">
-                Username
+                username
               </label>
               <input
                 id="username"
@@ -99,7 +105,7 @@ const SignUp = () => {
 
             <div>
               <label htmlFor="phone" className="sr-only">
-                Phone
+                phone
               </label>
               <input
                 id="phone"
@@ -116,12 +122,12 @@ const SignUp = () => {
             <p className="error-msg">{errors.phone}</p>
 
             <div>
-              <label htmlFor="password" className="sr-only">
-                Password
+              <label htmlFor="password1" className="sr-only">
+                password1
               </label>
               <input
-                id="password"
-                name="password"
+                id="password1"
+                name="password1"
                 type="password"
                 autoComplete="current-password"
                 className="input-form"
@@ -134,8 +140,8 @@ const SignUp = () => {
             <p className="error-msg">{errors.password1}</p>
 
             <div>
-              <label htmlFor="password" className="sr-only">
-                Confirm Password
+              <label htmlFor="password2" className="sr-only">
+                password2
               </label>
               <input
                 id="password2"

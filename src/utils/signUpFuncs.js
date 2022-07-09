@@ -13,28 +13,30 @@ const isExist = (inp, type) => {
   return users.some((user) => user[type] === inp);
 };
 
-const isError = (emailInp, usernameInp, phoneInp, pw1, pw2) => {
+const isError = (data) => {
   const err = {};
 
-  if (!isValid(emailInp, emailRegex)) err.email = 'Email is invalid';
-  else if (isExist(emailInp, 'email'))
+  if (!isValid(data.email, emailRegex))
+    err.email = 'Email is invalid';
+  else if (isExist(data.email, 'email'))
     err.email = 'Email is already taken';
 
-  if (!isValid(usernameInp, usernameRegex))
+  if (!isValid(data.username, usernameRegex))
     err.username =
       'Username must be between 6-20 length with no special character';
-  else if (isExist(usernameInp, 'username'))
+  else if (isExist(data.username, 'username'))
     err.username = 'Username is already taken';
 
-  if (!isValid(phoneInp, phoneRegex))
+  if (!isValid(data.phone, phoneRegex))
     err.phone = 'Phone number must be 10-digits';
 
-  if (!isValid(pw1, passwordRegex))
+  if (!isValid(data.password1, passwordRegex))
     err.password1 = 'Password must be at least 6 characters';
 
-  if (pw2 !== pw1) err.password2 = "Passwords don't match";
+  if (data.password2 !== data.password1)
+    err.password2 = "Passwords don't match";
 
   return err;
 };
 
-export { isValid, isExist, isError };
+export default isError;
