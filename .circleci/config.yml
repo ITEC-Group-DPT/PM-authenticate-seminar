@@ -17,7 +17,7 @@ jobs:
           command: npm run test:ci
       - run:
           name: Deployment
-          command: git push heroku main
+          command: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git main
 workflows:
   testing:
     jobs:
@@ -25,6 +25,6 @@ workflows:
       - heroku/deploy-via-git:
           requires:
             - build-and-test
-          filters:
-            branches:
-              only: main
+          # filters:
+          #   branches:
+          #     only: main
