@@ -14,6 +14,9 @@ jobs:
       - run:
           name: Run tests
           command: npm run test:ci
+      - run:
+          name: Deployment
+          command: git push heroku main
 workflows:
   testing:
     jobs:
