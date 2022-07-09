@@ -1,0 +1,30 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@4.7
+  heroku: circleci/heroku@0.0.10
+
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/node:16.10
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          name: Run tests
+          command: npm run test:ci
+      - run:
+          name: Deployment
+          command: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git main
+workflows:
+  testing:
+    jobs:
+      - build-and-test
+      - heroku/deploy-via-git:
+          requires:
+            - build-and-test
+          # filters:
+          #   branches:
+          #     only: main
