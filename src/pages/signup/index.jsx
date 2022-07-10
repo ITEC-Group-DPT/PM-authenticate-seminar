@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import bcrypt from 'bcryptjs';
 import validator from 'utils/validator';
+import { Link } from 'react-router-dom';
 import InputField from './inputField';
 
-const SignUp = () => {
+const SignUp = ({ isTest = false }) => {
   const [formVals, setFormVals] = useState({
     email: '',
     username: '',
@@ -180,6 +181,8 @@ const SignUp = () => {
               Sign up
             </button>
           </div>
+
+          {!isTest && <Link to="/signin">Back to sign in</Link>}
         </form>
       </div>
     </div>
