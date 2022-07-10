@@ -1,34 +1,7 @@
 import React, { useState } from 'react';
 import bcrypt from 'bcryptjs';
 import validator from 'utils/validator';
-
-const InputField = ({
-  label,
-  type,
-  value,
-  autoComplete,
-  placeholder,
-  onChange,
-  error,
-}) => (
-  <>
-    <label htmlFor={label} className="sr-only">
-      {label}
-    </label>
-    <input
-      id={label}
-      name={label}
-      type={type}
-      autoComplete={autoComplete}
-      className="input-form"
-      placeholder={placeholder}
-      required
-      value={value}
-      onChange={onChange}
-    />
-    <p className="error-msg">{error}</p>
-  </>
-);
+import InputField from './inputField';
 
 const SignUp = () => {
   const [formVals, setFormVals] = useState({
@@ -203,7 +176,7 @@ const SignUp = () => {
             <button
               className="submit-btn"
               type="submit"
-              onClick={(e) => handleSubmit(e)}>
+              onClick={handleSubmit}>
               Sign up
             </button>
           </div>
