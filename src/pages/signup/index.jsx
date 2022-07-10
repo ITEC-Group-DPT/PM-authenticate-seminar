@@ -1,60 +1,117 @@
 import React, { useState } from 'react';
 import bcrypt from 'bcryptjs';
-import isError from '../../utils/signUpFuncs';
+import validator from 'utils/validator';
+
+const InputField = ({
+  label,
+  type,
+  value,
+  autoComplete,
+  placeholder,
+  onChange,
+  error,
+}) => (
+  <>
+    <label htmlFor={label} className="sr-only">
+      {label}
+    </label>
+    <input
+      id={label}
+      name={label}
+      type={type}
+      autoComplete={autoComplete}
+      className="input-form"
+      placeholder={placeholder}
+      required
+      value={value}
+      onChange={onChange}
+    />
+    <p className="error-msg">{error}</p>
+  </>
+);
 
 const SignUp = () => {
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
-  const [phone, setPhone] = useState('');
-  const [password1, setPassword1] = useState('');
-  const [password2, setPassword2] = useState('');
+  const [formVals, setFormVals] = useState({
+    email: '',
+    username: '',
+    phone: '',
+    password1: '',
+    password2: '',
+  });
   const [errors, setErrors] = useState({});
-  const [showNoti, setShowNoti] = useState(false);
+
+  const isValid = (inp, regex) => {
+    return inp.match(regex);
+  };
+
+  const isExist = (inp, type) => {
+    const users = JSON.parse(localStorage.getItem('users'));
+    return users.some((user) => user[type] === inp);
+  };
+
+  const isError = (data) => {
+    const err = {};
+
+    if (!isValid(data.email, validator.email))
+      err.email = 'Email is invalid';
+    else if (isExist(data.email, 'email'))
+      err.email = 'Email is already taken';
+
+    if (!isValid(data.username, validator.username))
+      err.username =
+        'Username must be between 6-20 length with no special character';
+    else if (isExist(data.username, 'username'))
+      err.username = 'Username is already taken';
+
+    if (!isValid(data.phone, validator.phone))
+      err.phone = 'Phone number must be 10-digits';
+
+    if (!isValid(data.password1, validator.password))
+      err.password1 = 'Password must be at least 6 characters';
+
+    if (data.password2 !== data.password1)
+      err.password2 = "Passwords don't match";
+
+    return err;
+  };
+
+  const createAccount = (vals) => {
+    const hash = bcrypt.hashSync(vals.password1, 8);
+
+    const users = JSON.parse(localStorage.getItem('users'));
+    const newUser = {
+      id: users.length,
+      email: vals.email,
+      username: vals.username,
+      password: hash,
+      phone: vals.phone,
+    };
+
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const data = {
-      email,
-      username,
-      phone,
-      password1,
-      password2,
+      email: formVals.email,
+      username: formVals.username,
+      phone: formVals.phone,
+      password1: formVals.password1,
+      password2: formVals.password2,
     };
     const err = isError(data);
     setErrors(err);
 
     if (Object.keys(err).length === 0) {
-      const hash = bcrypt.hashSync(password1, 8);
-
-      const users = JSON.parse(localStorage.getItem('users'));
-      const newUser = {
-        id: users.length,
-        email,
-        username,
-        password: hash,
-        phone,
-      };
-
-      users.push(newUser);
-      localStorage.setItem('users', JSON.stringify(users));
-
-      setShowNoti(true);
-    } else setShowNoti(false);
+      createAccount(formVals);
+    }
   };
 
   return (
     <div className="h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
-        {showNoti ? (
-          <div
-            className="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
-            role="alert">
-            <span className="font-medium">Sign up sucessfully!</span>{' '}
-            Refresh localStorage to see new account.
-          </div>
-        ) : (
-          ''
-        )}
         <div>
           <img
             className="mx-auto h-12 w-auto"
@@ -67,95 +124,80 @@ const SignUp = () => {
         </div>
         <form className="mt-8 space-y-6" action="#" method="POST">
           <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="email" className="sr-only">
-                email
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                className="input-form"
-                placeholder="Email address"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <p className="error-msg">{errors.email}</p>
+            <InputField
+              label="email"
+              type="email"
+              value={formVals.email}
+              autoComplete="email"
+              placeholder="Email address"
+              onChange={(e) =>
+                setFormVals({
+                  ...formVals,
+                  email: e.target.value,
+                })
+              }
+              error={errors.email}
+            />
 
-            <div>
-              <label htmlFor="username" className="sr-only">
-                username
-              </label>
-              <input
-                id="username"
-                name="username"
-                type="text"
-                autoComplete="username"
-                className="input-form"
-                placeholder="Username"
-                required
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </div>
-            <p className="error-msg">{errors.username}</p>
+            <InputField
+              label="username"
+              type="text"
+              value={formVals.username}
+              autoComplete="username"
+              placeholder="Username"
+              onChange={(e) =>
+                setFormVals({
+                  ...formVals,
+                  username: e.target.value,
+                })
+              }
+              error={errors.username}
+            />
 
-            <div>
-              <label htmlFor="phone" className="sr-only">
-                phone
-              </label>
-              <input
-                id="phone"
-                name="phone"
-                type="tel"
-                autoComplete="phone"
-                className="input-form"
-                placeholder="Phone number"
-                required
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-            </div>
-            <p className="error-msg">{errors.phone}</p>
+            <InputField
+              label="phone"
+              type="tel"
+              value={formVals.phone}
+              autoComplete="phone"
+              placeholder="Phone number"
+              onChange={(e) =>
+                setFormVals({
+                  ...formVals,
+                  phone: e.target.value,
+                })
+              }
+              error={errors.phone}
+            />
 
-            <div>
-              <label htmlFor="password1" className="sr-only">
-                password1
-              </label>
-              <input
-                id="password1"
-                name="password1"
-                type="password"
-                autoComplete="current-password"
-                className="input-form"
-                placeholder="Password"
-                required
-                value={password1}
-                onChange={(e) => setPassword1(e.target.value)}
-              />
-            </div>
-            <p className="error-msg">{errors.password1}</p>
+            <InputField
+              label="password1"
+              type="password"
+              value={formVals.password}
+              autoComplete="current-password"
+              placeholder="Password"
+              onChange={(e) =>
+                setFormVals({
+                  ...formVals,
+                  password1: e.target.value,
+                })
+              }
+              error={errors.password1}
+            />
 
-            <div>
-              <label htmlFor="password2" className="sr-only">
-                password2
-              </label>
-              <input
-                id="password2"
-                name="password2"
-                type="password"
-                autoComplete="current-password"
-                className="input-form"
-                placeholder="Confirm password"
-                required
-                value={password2}
-                onChange={(e) => setPassword2(e.target.value)}
-              />
-            </div>
-            <p className="error-msg">{errors.password2}</p>
+            <InputField
+              label="password2"
+              type="password"
+              value={formVals.password}
+              autoComplete="current-password"
+              placeholder="Confirm password"
+              onChange={(e) =>
+                setFormVals({
+                  ...formVals,
+                  password2: e.target.value,
+                })
+              }
+              error={errors.password2}
+            />
           </div>
           <div>
             <button
