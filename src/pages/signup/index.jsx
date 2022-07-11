@@ -182,7 +182,16 @@ const SignUp = ({ isTest = false }) => {
             </button>
           </div>
 
-          {!isTest && <Link to="/signin">Back to sign in</Link>}
+          {!isTest && (
+            <div className="flex justify-center">
+              <p className="mr-1">Already have an account? </p>
+              <Link
+                className="underline text-indigo-600"
+                to="/signin">
+                Sign in
+              </Link>
+            </div>
+          )}
         </form>
       </div>
     </div>
