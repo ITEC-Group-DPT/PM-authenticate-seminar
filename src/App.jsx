@@ -9,7 +9,6 @@ import userData from 'users.json';
 const AppRoutes = () => {
   useEffect(() => {
     localStorage.setItem('users', JSON.stringify(userData));
-    
   }, []);
   return (
     <BrowserRouter>
