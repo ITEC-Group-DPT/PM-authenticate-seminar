@@ -92,7 +92,7 @@ describe('Sign in functionality', () => {
       render(<SignIn onTestSubmit={onLogin} />);
 
       const passwordInp = screen.getByLabelText('Password');
-      handleInput(passwordInp, '000');
+      handleInput(passwordInp, '0000');
 
       fireSubmit();
 
