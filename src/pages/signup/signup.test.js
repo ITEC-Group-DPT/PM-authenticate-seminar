@@ -28,7 +28,6 @@ describe('Sign up functionality', () => {
   });
 
   beforeEach(() => {
-    // eslint-disable-next-line testing-library/no-render-in-setup
     render(<SignUp isTest />);
   });
 

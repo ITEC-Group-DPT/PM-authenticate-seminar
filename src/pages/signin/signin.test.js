@@ -14,6 +14,7 @@ describe('Sign in functionality', () => {
   beforeAll(() => {
     localStorage.setItem('users', JSON.stringify(userData));
   });
+
   describe('inputs are all valid', () => {
     const onLogin = jest.fn((userDTO) => {
       expect(userDTO.username).toMatch(validator.email);
@@ -38,6 +39,7 @@ describe('Sign in functionality', () => {
         });
       });
     });
+
     describe('un-existed account', () => {
       test('cannot login with unknow email', async () => {
         const usernameInp = screen.getByLabelText('Email address');
