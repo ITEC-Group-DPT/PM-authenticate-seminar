@@ -9,6 +9,8 @@ import SignUp from 'pages/signup';
 import userData from 'users.json';
 import bcrypt from 'bcryptjs';
 
+jest.mock('react-router-dom');
+
 const handleInput = (fieldName, value) => {
   const selector = screen.getByLabelText(fieldName);
   fireEvent.change(selector, {
@@ -28,7 +30,7 @@ describe('Sign up functionality', () => {
   });
 
   beforeEach(() => {
-    render(<SignUp isTest />);
+    render(<SignUp />);
   });
 
   describe('Invalid fields', () => {

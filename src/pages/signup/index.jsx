@@ -4,7 +4,7 @@ import validator from 'utils/validator';
 import { Link } from 'react-router-dom';
 import InputField from './inputField';
 
-const SignUp = ({ isTest = false }) => {
+const SignUp = () => {
   const [formVals, setFormVals] = useState({
     email: '',
     username: '',
@@ -182,16 +182,12 @@ const SignUp = ({ isTest = false }) => {
             </button>
           </div>
 
-          {!isTest && (
-            <div className="flex justify-center">
-              <p className="mr-1">Already have an account? </p>
-              <Link
-                className="underline text-indigo-600"
-                to="/signin">
-                Sign in
-              </Link>
-            </div>
-          )}
+          <div className="flex justify-center">
+            <p className="mr-1">Already have an account? </p>
+            <Link className="underline text-indigo-600" to="/signin">
+              Sign in
+            </Link>
+          </div>
         </form>
       </div>
     </div>

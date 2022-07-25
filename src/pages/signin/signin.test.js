@@ -10,6 +10,7 @@ import SignIn from 'pages/signin';
 import validator from 'utils/validator';
 import userData from 'users.json';
 
+jest.mock('react-router-dom');
 describe('Sign in functionality', () => {
   beforeAll(() => {
     localStorage.setItem('users', JSON.stringify(userData));
