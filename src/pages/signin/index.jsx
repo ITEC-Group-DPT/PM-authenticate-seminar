@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import { compareSync } from 'bcryptjs';
 import validator from 'utils/validator';
+import { Link } from 'react-router-dom';
 
 const SignIn = ({ onTestSubmit }) => {
   const [username, setUsername] = useState('');
@@ -72,7 +73,7 @@ const SignIn = ({ onTestSubmit }) => {
             alt="Workflow"
           />
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            asdasd
+            Sign in to your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Or{' '}
@@ -148,11 +149,11 @@ const SignIn = ({ onTestSubmit }) => {
             </div>
 
             <div className="text-sm">
-              <a
-                href="#"
+              <Link
+                to="/signUp"
                 className="font-medium text-indigo-600 hover:text-indigo-500">
-                Forgot your password?
-              </a>
+                Don&apos;t have an account ?
+              </Link>
             </div>
           </div>
 
